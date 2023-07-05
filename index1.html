@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Description" content="Package websocket implements the WebSocket protocol defined in RFC 6455.">
+  <title>Test websocket package</title>
+  </head>
+  <body>
+    <h3>github.com/gorilla/websocket - Go Packages</h3>
+    
+    <button name="command1" onclick="sendcommand1()">command1</button>
+    <button name="command2" onclick="sendcommand2()">command2</button>
+    <button name="command3" onclick="sendcommand3()">command3</button>
+    
+    <p name="resCommand1" id="resComm">Res</p>
+    
+  <script>
+    var socket = new WebSocket("ws://localhost:8081");
+    
+    function sendcommand1() {
+      socket.send('{"id":"2", "user":"u2", "serverNo":1, "command":"comm1"}');
+    }
+    function sendcommand2() {
+      socket.send('{"id":"2", "user":"u2", "serverNo":1, "command":"comm2"}');
+    }
+    function sendcommand3() {
+      socket.send('{"id":"2", "user":"u2", "serverNo":2, "command":"comm3"}');
+    }
+    
+    socket.onmessage = function(event) {
+      var incomingMessage = event.data;
+      document.getElementById('resComm').innerHTML = incomingMessage;
+    };
+    socket.onclose = function(event) {
+      document.getElementById('resComm').innerHTML = "Соединение закрыто";
+    };
+    socket.onerror = function(error) {
+      document.getElementById('resComm').innerHTML = "Error: "+error;
+    };
+  </script>
+  </body>
+</html>
